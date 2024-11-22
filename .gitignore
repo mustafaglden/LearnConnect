@@ -1,0 +1,7 @@
+*.xcworkspacedata
+*.xcbkptlist
+*.xcuserstate
+xcuserdata
+.DS_Store
+build/*
+.build
