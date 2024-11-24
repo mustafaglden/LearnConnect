@@ -1,0 +1,10 @@
+/* 
+  Localizable.strings
+  LearnConnect
+
+  Created by Mustafa on 22.11.2024.
+  
+*/
+
+"ok_button" = "OK";
+"error_text" = "Error";
