@@ -13,6 +13,7 @@ class AuthenticationViewModel {
     func registerUser(email: String, password: String) -> Bool {
         let user = User(context: context)
         user.email = email
+        user.username = email
         user.password = password
         
         do {

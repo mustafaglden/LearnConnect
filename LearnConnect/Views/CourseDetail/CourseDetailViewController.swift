@@ -38,47 +38,41 @@ class CourseDetailViewController: UIViewController {
         titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
         descriptionLabel.font = UIFont.systemFont(ofSize: 16)
         descriptionLabel.numberOfLines = 0
-        
+
         enrollLabel.text = "Enroll in this course"
         enrollLabel.font = UIFont.systemFont(ofSize: 18)
+        enrollSwitch.addTarget(self, action: #selector(toggleEnrollment), for: .valueChanged)
         
         // Rating button setup
         rateButton.setTitle("Rate this Course", for: .normal)
         rateButton.addTarget(self, action: #selector(rateCourse), for: .touchUpInside)
-        
-        // Feedback TextView setup
-        feedbackTextView.layer.borderWidth = 1
-        feedbackTextView.layer.borderColor = UIColor.lightGray.cgColor
-        feedbackTextView.layer.cornerRadius = 8
-        feedbackTextView.font = UIFont.systemFont(ofSize: 14)
-        
+
         // TableView setup
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "FeedbackCell")
-        
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel, enrollLabel, enrollSwitch, rateButton, feedbackTextView, tableView])
+        tableView.register(RatingTableViewCell.self, forCellReuseIdentifier: "FeedbackCell")
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+
+        let stackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel, enrollLabel, enrollSwitch, rateButton, tableView])
         stackView.axis = .vertical
         stackView.spacing = 20
-        stackView.alignment = .leading
-        
+        stackView.alignment = .fill
+
         view.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            tableView.heightAnchor.constraint(equalToConstant: 300)
+            tableView.heightAnchor.constraint(equalToConstant: 500)
         ])
-        
-        enrollSwitch.addTarget(self, action: #selector(toggleEnrollment), for: .valueChanged)
     }
     
     private func loadCourseDetails() {
         guard let course = course else { return }
         titleLabel.text = course.title
-        descriptionLabel.text = course.description
+//        descriptionLabel.text = course.description
     }
     
     @objc private func toggleEnrollment() {
@@ -105,15 +99,11 @@ class CourseDetailViewController: UIViewController {
     
     private func submitFeedback(rating: Int, comment: String) {
         guard let course = course else { return }
-
-        viewModel.submitFeedback(for: course, rating: rating, feedback: comment) { success in
-            if success {
-                print("Feedback submitted successfully")
-                self.tableView.reloadData() // Reload the table to show the new feedback
-            } else {
-                print("Failed to submit feedback")
-            }
+        viewModel.onFeedbackSaved = { [weak self] in
+            guard let self = self else { return }
+            self.tableView.reloadData() // Reload table view when feedback is saved
         }
+        viewModel.submitFeedback(for: course, rating: rating, feedback: comment)
     }
 }
 
@@ -125,11 +115,14 @@ extension CourseDetailViewController: UITableViewDataSource, UITableViewDelegate
     }
        
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "FeedbackCell", for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "FeedbackCell", for: indexPath) as? RatingTableViewCell else {
+            return UITableViewCell()
+        }
         guard let course = course else { return cell }
         let feedbacks = Array(course.feedbacks as? Set<Feedback> ?? [])
-        let feedback = feedbacks[indexPath.row] // Assuming feedback is a Set
-        cell.textLabel?.text = feedback.feedback // Adjust to the actual property of feedback
+        let feedback = feedbacks[indexPath.row] 
+        cell.configure(with: feedback)
+        cell.isUserInteractionEnabled = false
         return cell
     }
 }

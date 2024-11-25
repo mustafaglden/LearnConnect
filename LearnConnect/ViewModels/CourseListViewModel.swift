@@ -11,6 +11,8 @@ import CoreData
 class CourseListViewModel {
     private let context = CoreDataStack.shared.context
     
+    var onFeedbackSaved: (() -> Void)?
+    
     func fetchCourse() -> [Course] {
         let fetchRequest: NSFetchRequest<Course> = Course.fetchRequest()
         
@@ -61,28 +63,23 @@ class CourseListViewModel {
         }
     }
     
-    func submitFeedback(for course: Course, rating: Int, feedback: String, completion: @escaping (Bool) -> Void) {
+    func submitFeedback(for course: Course, rating: Int, feedback: String) {
         guard let user = Session.user else {
-            completion(false)
             return
         }
-        // Create a new Feedback object
-        let feedbackEntity = Feedback(context: CoreDataStack.shared.context)
+        
+        let feedbackEntity = Feedback(context: context)
         feedbackEntity.rating = Int16(rating)
         feedbackEntity.feedback = feedback
         feedbackEntity.course = course
         feedbackEntity.user = user
         
-        // Add the feedback to the course (optional, depends on your Core Data model)
+        user.addToFeedbacks(feedbackEntity)
         course.addToFeedbacks(feedbackEntity)
         
-        do {
-            try CoreDataStack.shared.context.save()
-            completion(true)
-        } catch {
-            print("Failed to save feedback: \(error.localizedDescription)")
-            completion(false)
-        }
+        
+        saveContext()
+        onFeedbackSaved?()
     }
     
     private func saveContext() {
