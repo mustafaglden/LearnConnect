@@ -52,7 +52,7 @@ final class CoursesListViewController: UIViewController, UITableViewDataSource, 
         let cell = tableView.dequeueReusableCell(withIdentifier: "CourseCell", for: indexPath)
         let course = courses[indexPath.row]
         cell.textLabel?.text = course.title
-        cell.accessoryType = course.isEnrolled ? .checkmark : .none
+//        cell.accessoryType = course.enrolledUsers?.contains(Session.user) ? .checkmark : .none
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

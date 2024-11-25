@@ -94,12 +94,12 @@ final class LoginViewController: UIViewController {
     
     @objc private func loginButtonTapped() {
         guard let email = emailTextField.text, let password = passwordTextField.text else { return }
-//        if viewModel.loginUser(email: email, password: password) {
+        if viewModel.loginUser(email: email, password: password) {
             let tabbarVC = MainTabBarController()
             navigationController?.pushViewController(tabbarVC, animated: true)
-//        } else {
-//            showAlert("User credentials or password doesn't match.")
-//        }
+        } else {
+            showAlert("User credentials or password doesn't match.")
+        }
         
     }
     

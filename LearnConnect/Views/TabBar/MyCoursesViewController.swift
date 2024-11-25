@@ -28,7 +28,10 @@ class MyCoursesViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     private func fetchEnrolledCourses() {
-        courses = viewModel.fetchCourse().filter { $0.isEnrolled }
+        guard let courseSet = Session.user?.enrolledCourses else {
+            return
+        }
+        courses = (courseSet.allObjects as? [Course]) ?? []
         tableView.reloadData()
     }
     
@@ -52,6 +55,7 @@ class MyCoursesViewController: UIViewController, UITableViewDataSource, UITableV
 //        detailVC.course = course
         let fileURL = Bundle.main.url(forResource: course.fileName, withExtension: "mp4")
         detailVC.videoURL = fileURL
+        detailVC.course = course
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }

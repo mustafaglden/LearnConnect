@@ -30,7 +30,12 @@ class AuthenticationViewModel {
         
         do {
             let users = try context.fetch(fetchRequest)
-            return !users.isEmpty
+            if !users.isEmpty {
+                Session.user = users.first
+                return true
+            } else {
+                return false
+            }
         } catch {
             print("Failed to fetch user: \(error.localizedDescription)")
             return false

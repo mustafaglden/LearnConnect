@@ -28,7 +28,6 @@ class DummyDataLoader {
                     course.title = videoName // Assign the video name as the course title for simplicity
                     course.fileName = videoName
                     course.desc = "Dummy description for \(videoName)"
-                    course.isEnrolled = false
                 }
             } catch {
                 print("Error fetching existing video data: \(error)")

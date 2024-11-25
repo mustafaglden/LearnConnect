@@ -4,11 +4,26 @@
         <attribute name="desc" attributeType="String"/>
         <attribute name="fileName" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="isEnrolled" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="title" attributeType="String"/>
+        <relationship name="enrolledUsers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="enrolledCourses" inverseEntity="User"/>
+        <relationship name="enrollments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Enrollment" inverseName="course" inverseEntity="Enrollment"/>
+        <relationship name="feedbacks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Feedback" inverseName="course" inverseEntity="Feedback"/>
+    </entity>
+    <entity name="Enrollment" representedClassName="Enrollment" syncable="YES" codeGenerationType="class">
+        <attribute name="videoProgress" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="course" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Course" inverseName="enrollments" inverseEntity="Course"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User" inverseName="enrollments" inverseEntity="User"/>
+    </entity>
+    <entity name="Feedback" representedClassName="Feedback" syncable="YES" codeGenerationType="class">
+        <attribute name="feedback" optional="YES" attributeType="String"/>
+        <attribute name="rating" optional="YES" attributeType="Integer 16" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="course" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Course" inverseName="feedbacks" inverseEntity="Course"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="User"/>
     </entity>
     <entity name="User" representedClassName="User" syncable="YES" codeGenerationType="class">
         <attribute name="email" optional="YES" attributeType="String"/>
         <attribute name="password" optional="YES" attributeType="String"/>
+        <relationship name="enrolledCourses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Course" inverseName="enrolledUsers" inverseEntity="Course"/>
+        <relationship name="enrollments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Enrollment" inverseName="user" inverseEntity="Enrollment"/>
     </entity>
 </model>
