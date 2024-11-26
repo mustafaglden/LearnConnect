@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class CoursesListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchResultsUpdating {
+final class CoursesListViewController: UIViewController, UISearchResultsUpdating {
     
     private let viewModel = CourseListViewModel()
     private let tableView = UITableView()
@@ -18,6 +18,7 @@ final class CoursesListViewController: UIViewController, UITableViewDataSource, 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "All Courses"
+        
         setupUI()
         setupSearchController()
         fetchCourses()
@@ -43,25 +44,6 @@ final class CoursesListViewController: UIViewController, UITableViewDataSource, 
         courses = viewModel.fetchCourse()
         tableView.reloadData()
     }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return courses.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CourseCell", for: indexPath)
-        let course = courses[indexPath.row]
-        cell.textLabel?.text = course.title
-//        cell.accessoryType = course.enrolledUsers?.contains(Session.user) ? .checkmark : .none
-        return cell
-    }
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let course = courses[indexPath.row]
-        let detailVC = CourseDetailViewController()
-        detailVC.course = course
-        navigationController?.pushViewController(detailVC, animated: true)
-    }
-    
     func updateSearchResults(for searchController: UISearchController) {
         guard let query = searchController.searchBar.text, !query.isEmpty else {
             filteredCourses = courses
@@ -73,6 +55,26 @@ final class CoursesListViewController: UIViewController, UITableViewDataSource, 
             (course.description.lowercased()).contains(query.lowercased())
         }
         tableView.reloadData()
+    }
+}
+
+extension CoursesListViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return courses.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CourseCell", for: indexPath)
+        let course = courses[indexPath.row]
+        cell.textLabel?.text = course.title
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let course = courses[indexPath.row]
+        let detailVC = CourseDetailViewController()
+        detailVC.course = course
+        navigationController?.pushViewController(detailVC, animated: true)
     }
     
 }

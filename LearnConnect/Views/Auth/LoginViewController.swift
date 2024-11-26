@@ -16,22 +16,29 @@ final class LoginViewController: UIViewController {
     private let passwordTextField = UITextField()
     private let registerButton = UIButton(type: .system)
     private let loginButton = UIButton(type: .system)
+    private let titleLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .orange
         setupView()
     }
     
     func setupView() {
+        setupTitle()
         setupTextFields()
         setupButtons()
         
         NSLayoutConstraint.activate([
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            titleLabel.heightAnchor.constraint(equalToConstant: 80),
+            
             emailTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 30),
             emailTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -30),
-            emailTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            emailTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
             emailTextField.heightAnchor.constraint(equalToConstant: 40),
             
             passwordTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -50,7 +57,17 @@ final class LoginViewController: UIViewController {
             registerButton.heightAnchor.constraint(equalToConstant: 40),
             registerButton.widthAnchor.constraint(equalTo: loginButton.widthAnchor)
         ])
-   
+    }
+    
+    func setupTitle() {
+        view.addSubview(titleLabel)
+        
+        titleLabel.textColor = .white
+        titleLabel.text = "Welcome to LearnConnect"
+        titleLabel.textAlignment = .center
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 28)
+        titleLabel.numberOfLines = 2
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
     }
     
     func setupTextFields() {
@@ -78,7 +95,7 @@ final class LoginViewController: UIViewController {
         registerButton.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
         
         loginButton.setTitle("Login", for: .normal)
-        loginButton.backgroundColor = .systemBlue
+        loginButton.backgroundColor = .green
         loginButton.tintColor = .white
         loginButton.layer.cornerRadius = 4
         loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)

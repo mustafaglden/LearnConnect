@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+final class ProfileViewController: UIViewController {
     
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -20,7 +20,7 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         imageView.layer.borderColor = UIColor.lightGray.cgColor
         return imageView
     }()
-
+    
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -52,7 +52,20 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-
+    
+    private let logoutButton: UIButton = {
+        let button = UIButton(type: .system)
+        var config = UIButton.Configuration.plain()
+        config.contentInsets = NSDirectionalEdgeInsets(top: 10.0, leading: 10.0, bottom: 10.0, trailing: 10.0)
+        button.configuration = config
+        button.setImage(UIImage(systemName: "power"), for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = .red
+        button.layer.cornerRadius = 8
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -60,18 +73,18 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     }()
     
     private var isEditingProfile: Bool = false
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         title = "My Profile"
         view.backgroundColor = .white
         tableView.delegate = self
         tableView.dataSource = self
-
+        
         setupLayout()
     }
-
+    
     private func setupLayout() {
         // Add subviews
         view.addSubview(profileImageView)
@@ -79,8 +92,11 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         view.addSubview(nameTextField)
         view.addSubview(editButton)
         view.addSubview(tableView)
-
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: logoutButton)
         editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
+        logoutButton.addTarget(self, action: #selector(logoutButtonTapped), for: .touchUpInside)
+        
+        tableView.register(ProfileTableViewCell.self, forCellReuseIdentifier: "ProfileCell")
         
         // Profile ImageView constraints
         NSLayoutConstraint.activate([
@@ -88,18 +104,18 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
             profileImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             profileImageView.widthAnchor.constraint(equalToConstant: 80),
             profileImageView.heightAnchor.constraint(equalToConstant: 80),
-        // Name Label constraints
+            // Name Label constraints
             nameLabel.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 16),
             nameLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -16),
-        // Name Label constraints
+            // Name Label constraints
             nameTextField.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor),
             nameTextField.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 16),
             nameTextField.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -16),
-        // Edit Button constraints
+            // Edit Button constraints
             editButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor),
             editButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-        // TableView constraints
+            // TableView constraints
             tableView.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 16),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -119,6 +135,7 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
         } else {
             // Save changes
             if let updatedName = nameTextField.text, !updatedName.isEmpty {
+                Session.user?.username = updatedName
                 nameLabel.text = updatedName // Update label text with text field input
             }
             nameLabel.isHidden = false
@@ -129,9 +146,14 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
             print("Updated Name: \(nameLabel.text ?? "")")
         }
     }
+    
+    @objc func logoutButtonTapped() { // Not working.
+        let loginVC = LoginViewController()
+        self.navigationController?.pushViewController(loginVC, animated: true)
+    }
+}
 
-    // MARK: - UITableView DataSource and Delegate Methods
-
+extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let user = Session.user, let courseCount = user.enrolledCourses?.count else {
             return 0
@@ -140,14 +162,17 @@ final class ProfileViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CourseCell", for: indexPath)
-        guard let user = Session.user, let courses = user.enrolledCourses else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as? ProfileTableViewCell else {
+            return UITableViewCell()
+        }
+        guard let user = Session.user, let userCourses = user.enrolledCourses else {
             cell.textLabel?.text = "No Courses"
             return cell
         }
-//        let coursesArray = course.allObjects as? Course ?? [
-//        let course = coursesArray[indexPath.row]
-//        cell.textLabel?.text = course.title
+        let courses = Array(userCourses as? Set<Course> ?? [])
+        let course = courses[indexPath.row]
+        cell.configure(with: course)
+        cell.isUserInteractionEnabled = false
         return cell
     }
 }

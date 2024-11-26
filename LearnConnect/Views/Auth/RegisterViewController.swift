@@ -17,7 +17,7 @@ final class RegisterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .orange
         setupUI()
     }
     
@@ -26,7 +26,7 @@ final class RegisterViewController: UIViewController {
         view.addSubview(passwordTextField)
         view.addSubview(registerButton)
         
-        emailTextField.placeholder = "Enter v"
+        emailTextField.placeholder = "Enter email"
         emailTextField.borderStyle = .roundedRect
         
         passwordTextField.placeholder = "Enter Password"

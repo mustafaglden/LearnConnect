@@ -7,7 +7,7 @@
 
 import CoreData
 
-class VideoPlayerViewModel {
+final class VideoPlayerViewModel {
     private let context = CoreDataStack.shared.context
     
     func saveVideoProgress(course: Course, user: User, progress: Float) {

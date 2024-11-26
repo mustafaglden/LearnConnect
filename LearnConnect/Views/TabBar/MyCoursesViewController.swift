@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyCoursesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+final class MyCoursesViewController: UIViewController{
     private let viewModel = CourseListViewModel()
     private let tableView = UITableView()
     private var courses: [Course] = []
@@ -34,7 +34,9 @@ class MyCoursesViewController: UIViewController, UITableViewDataSource, UITableV
         courses = (courseSet.allObjects as? [Course]) ?? []
         tableView.reloadData()
     }
-    
+}
+
+extension MyCoursesViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return courses.count
     }
@@ -49,10 +51,7 @@ class MyCoursesViewController: UIViewController, UITableViewDataSource, UITableV
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let course = courses[indexPath.row]
-        // MARK: TODO(Create new detail page)
-//        let detailVC = CourseDetailVideoPlayerViewController()
         let detailVC = VideoPlayerViewController()
-//        detailVC.course = course
         let fileURL = Bundle.main.url(forResource: course.fileName, withExtension: "mp4")
         detailVC.videoURL = fileURL
         detailVC.course = course

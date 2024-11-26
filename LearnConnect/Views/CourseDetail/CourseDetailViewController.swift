@@ -9,7 +9,7 @@ import UIKit
 
 import UIKit
 
-class CourseDetailViewController: UIViewController {
+final class CourseDetailViewController: UIViewController {
     
     var course: Course?
     private let titleLabel = UILabel()
@@ -65,14 +65,14 @@ class CourseDetailViewController: UIViewController {
             stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            tableView.heightAnchor.constraint(equalToConstant: 500)
+            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
     
     private func loadCourseDetails() {
         guard let course = course else { return }
         titleLabel.text = course.title
-//        descriptionLabel.text = course.description
+        descriptionLabel.text = course.desc
     }
     
     @objc private func toggleEnrollment() {

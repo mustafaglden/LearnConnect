@@ -7,8 +7,8 @@
 
 import UIKit
 
-class RateCourseViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
-
+final class RateCourseViewController: UIViewController {
+    
     // MARK: - Properties
     private let pickerView = UIPickerView()
     private let commentTextField = UITextField()
@@ -16,19 +16,19 @@ class RateCourseViewController: UIViewController, UIPickerViewDelegate, UIPicker
     private var selectedRating: Int = 1
     
     var onSubmit: ((Int, String) -> Void)?
-
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
-
+    
     // MARK: - Setup UI
     private func setupUI() {
         view.backgroundColor = .white
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
-
+        
         // PickerView setup
         pickerView.delegate = self
         pickerView.dataSource = self
@@ -37,23 +37,23 @@ class RateCourseViewController: UIViewController, UIPickerViewDelegate, UIPicker
         commentTextField.placeholder = "Enter your comment"
         commentTextField.borderStyle = .roundedRect
         commentTextField.translatesAutoresizingMaskIntoConstraints = false
-
+        
         // Submit Button setup
         submitButton.setTitle("Submit", for: .normal)
         submitButton.setTitleColor(.white, for: .normal)
         submitButton.backgroundColor = .systemBlue
         submitButton.layer.cornerRadius = 8
         submitButton.addTarget(self, action: #selector(submitTapped), for: .touchUpInside)
-
+        
         // StackView to organize the elements
         let stackView = UIStackView(arrangedSubviews: [pickerView, commentTextField, submitButton])
         stackView.axis = .vertical
         stackView.spacing = 16
         stackView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         // Add stackView to the view
         view.addSubview(stackView)
-
+        
         // Add constraints
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -63,14 +63,17 @@ class RateCourseViewController: UIViewController, UIPickerViewDelegate, UIPicker
             submitButton.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
-
+    
     // MARK: - Actions
     @objc private func submitTapped() {
         let comment = commentTextField.text ?? ""
         onSubmit?(selectedRating, comment) // Trigger the callback with rating and comment
         dismiss(animated: true, completion: nil)
     }
+    
+}
 
+extension RateCourseViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     // MARK: - UIPickerView DataSource & Delegate
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1

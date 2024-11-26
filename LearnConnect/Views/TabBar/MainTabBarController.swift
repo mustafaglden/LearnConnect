@@ -10,7 +10,11 @@ import UIKit
 final class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationItem.hidesBackButton = true
+        self.navigationItem.hidesBackButton = true
+        tabBar.backgroundColor = .systemOrange
+        tabBar.unselectedItemTintColor = .black
+        tabBar.tintColor = .white
+        
         let allCoursesVC = UINavigationController(rootViewController: CoursesListViewController())
         allCoursesVC.tabBarItem = UITabBarItem(title: "All Courses", image: UIImage(systemName: "list.bullet"), tag: 0)
                 

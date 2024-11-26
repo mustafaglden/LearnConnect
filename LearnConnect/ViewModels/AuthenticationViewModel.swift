@@ -7,7 +7,7 @@
 
 import CoreData
 
-class AuthenticationViewModel {
+final class AuthenticationViewModel {
     private let context = CoreDataStack.shared.context
     
     func registerUser(email: String, password: String) -> Bool {

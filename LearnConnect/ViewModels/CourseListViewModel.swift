@@ -8,7 +8,7 @@
 
 import CoreData
 
-class CourseListViewModel {
+final class CourseListViewModel {
     private let context = CoreDataStack.shared.context
     
     var onFeedbackSaved: (() -> Void)?
