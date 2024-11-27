@@ -8,9 +8,6 @@
 - [Technologies Used](#technologies-used)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Screenshots](#screenshots)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Project Overview
 LearnConnect is built with a focus on providing a seamless experience for users looking to explore and interact with courses. Users can browse courses, enroll in them, and view details, including videos and feedback from others. Additionally, users can leave feedback, rate courses, and manage their course enrollments through a personalized profile page.
