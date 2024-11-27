@@ -24,7 +24,6 @@ final class TitleView: UIView {
     }
     
     private func setupUI() {
-        // Configure title label
         titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
         titleLabel.numberOfLines = 1
         titleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)

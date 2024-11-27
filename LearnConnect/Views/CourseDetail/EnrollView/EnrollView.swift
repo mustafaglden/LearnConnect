@@ -24,7 +24,7 @@ final class EnrollView: UIStackView {
     }
     
     private func setupUI() {
-        enrollLabel.text = "Enroll in this course"
+        enrollLabel.text = "user_enroll".localized
         enrollLabel.font = UIFont.systemFont(ofSize: 18)
         enrollLabel.textAlignment = .center
 

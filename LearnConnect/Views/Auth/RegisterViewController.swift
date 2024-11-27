@@ -26,15 +26,15 @@ final class RegisterViewController: UIViewController {
         view.addSubview(passwordTextField)
         view.addSubview(registerButton)
         
-        emailTextField.placeholder = "Enter email"
+        emailTextField.placeholder = "enter_email".localized
         emailTextField.borderStyle = .roundedRect
         
-        passwordTextField.placeholder = "Enter Password"
+        passwordTextField.placeholder = "enter_password".localized
         passwordTextField.borderStyle = .roundedRect
         passwordTextField.isSecureTextEntry = true
         
         registerButton.addTarget(self, action: #selector(registerTapped), for: .touchUpInside)
-        registerButton.setTitle("Register", for: .normal)
+        registerButton.setTitle("register".localized, for: .normal)
         registerButton.backgroundColor = .systemGreen
         registerButton.tintColor = .white
         registerButton.layer.cornerRadius = 8
@@ -68,7 +68,7 @@ final class RegisterViewController: UIViewController {
             if success {
                 self.navigationController?.popViewController(animated: true)
             } else {
-                self.showAlert("Registration failed.")
+                self.showAlert("register_fail".localized)
             }
         }
     }

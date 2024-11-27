@@ -28,7 +28,6 @@ class VideoPlayerViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("View will disappear. Saving progress...")
         saveCurrentVideoProgress()
         removeVideoProgressObserver()
     }
@@ -36,7 +35,6 @@ class VideoPlayerViewController: UIViewController {
     // MARK: - Setup Methods
     private func setupVideoPlayer() {
         guard let videoURL = videoURL else {
-            print("Invalid video URL.")
             return
         }
 
@@ -66,7 +64,6 @@ class VideoPlayerViewController: UIViewController {
             }
             let progress = time.seconds / duration
             self.saveCurrentVideoProgress()
-            print("Current Video Progress: \(progress * 100)%")
         }
     }
     
@@ -79,21 +76,16 @@ class VideoPlayerViewController: UIViewController {
     
     private func seekToSavedProgress(for course: Course, user: User) {
         let progress = viewModel.getVideoProgress(for: user, in: course)
-        print("Fetched progress: \(progress * 100)%")
-        
         guard let player = player, let playerItem = player.currentItem else {
-            print("Player or PlayerItem is not initialized.")
             return
         }
         Task {
             do {
                 let duration = try await playerItem.asset.load(.duration)
                 guard duration.isNumeric && duration.seconds > 0 else {
-                    print("Invalid or zero duration.")
                     return
                 }
                 let targetTime = CMTime(seconds: duration.seconds * Double(progress), preferredTimescale: 600)
-                print("Seeking to: \(targetTime.seconds) seconds")
                 player.seek(to: targetTime, toleranceBefore: .zero, toleranceAfter: .zero) { finished in
                     if finished {
                         print("Seek operation completed successfully.")
@@ -111,7 +103,6 @@ class VideoPlayerViewController: UIViewController {
         guard let course = course, let user = Session.user, let player = player else { return }
         if let duration = player.currentItem?.duration.seconds, duration > 0 {
             let progress = Float(player.currentTime().seconds / duration)
-            print("Saving progress: \(progress * 100)%") // Debug log
             viewModel.saveVideoProgress(course: course, user: user, progress: progress)
         }
     }
@@ -147,8 +138,6 @@ class VideoPlayerViewController: UIViewController {
     func setDefaultSpeed() {
         let defaultSpeed: Float = 1.0
         player?.rate = defaultSpeed
-
-        // Highlight the default button (1.0x)
         for button in speedButtons {
             if button.titleLabel?.text == "\(defaultSpeed)x" {
                 button.backgroundColor = .systemBlue
@@ -164,7 +153,6 @@ class VideoPlayerViewController: UIViewController {
         let speeds: [Float] = [0.5, 1.0, 1.5, 2.0]
         let selectedSpeed = speeds[sender.tag]
         player?.rate = selectedSpeed
-        // Update button appearance to highlight the active speed
         for button in speedButtons {
             if button == sender {
             button.backgroundColor = .systemBlue
@@ -174,7 +162,5 @@ class VideoPlayerViewController: UIViewController {
                 button.setTitleColor(.systemBlue, for: .normal)
             }
         }
-
-        print("Playback speed set to: \(selectedSpeed)x")
     }
 }

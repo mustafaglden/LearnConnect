@@ -17,7 +17,7 @@ final class CoursesListViewController: UIViewController, UISearchResultsUpdating
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "All Courses"
+        title = "all_courses".localized
         
         setupUI()
         setupSearchController()
@@ -35,7 +35,7 @@ final class CoursesListViewController: UIViewController, UISearchResultsUpdating
     private func setupSearchController() {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search Courses"
+        searchController.searchBar.placeholder = "search".localized
         navigationItem.searchController = searchController
         definesPresentationContext = true
     }

@@ -65,7 +65,7 @@ final class ProfileViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Favorite Courses"
+        label.text = "fav_courses".localized
         label.textColor = .systemOrange
         label.font = UIFont.systemFont(ofSize: 16)
         label.textAlignment = .center
@@ -85,7 +85,7 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "My Profile"
+        title = "profile".localized
         view.backgroundColor = .white
         tableView.delegate = self
         tableView.dataSource = self

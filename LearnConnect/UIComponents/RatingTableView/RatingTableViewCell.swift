@@ -59,8 +59,8 @@ final class RatingTableViewCell: UITableViewCell {
     }
     
     func configure(with feedback: Feedback) {
-        nameLabel.text = feedback.user?.username ?? "Unknown User"
+        nameLabel.text = feedback.user?.username ?? "user_unknown".localized
         commentLabel.text = feedback.feedback
-        ratingLabel.text = "Rating: \(feedback.rating)/5"
+        ratingLabel.text = "rating".localized + ": \(feedback.rating)/5"
     }
 }

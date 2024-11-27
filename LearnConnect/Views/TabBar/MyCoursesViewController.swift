@@ -14,7 +14,7 @@ final class MyCoursesViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "My Courses"
+        title = "my_courses".localized
         setupUI()
         fetchEnrolledCourses()
     }

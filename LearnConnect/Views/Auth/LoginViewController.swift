@@ -63,7 +63,7 @@ final class LoginViewController: UIViewController {
         view.addSubview(titleLabel)
         
         titleLabel.textColor = .white
-        titleLabel.text = "Welcome to LearnConnect"
+        titleLabel.text = "welcome".localized
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.boldSystemFont(ofSize: 28)
         titleLabel.numberOfLines = 2
@@ -74,10 +74,10 @@ final class LoginViewController: UIViewController {
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
         
-        emailTextField.placeholder = "Enter E-Mail"
+        emailTextField.placeholder = "enter_email".localized
         emailTextField.borderStyle = .roundedRect
         
-        passwordTextField.placeholder = "Enter Password"
+        passwordTextField.placeholder = "enter_password".localized
         passwordTextField.borderStyle = .roundedRect
         passwordTextField.isSecureTextEntry = true
         
@@ -89,12 +89,12 @@ final class LoginViewController: UIViewController {
         view.addSubview(registerButton)
         view.addSubview(loginButton)
         
-        registerButton.setTitle("Register", for: .normal)
+        registerButton.setTitle("register".localized, for: .normal)
         registerButton.tintColor = .white
         registerButton.backgroundColor = .lightGray
         registerButton.addTarget(self, action: #selector(registerButtonTapped), for: .touchUpInside)
         
-        loginButton.setTitle("Login", for: .normal)
+        loginButton.setTitle("login".localized, for: .normal)
         loginButton.backgroundColor = .green
         loginButton.tintColor = .white
         loginButton.layer.cornerRadius = 4
@@ -120,7 +120,7 @@ final class LoginViewController: UIViewController {
                 }
             }
         } else {
-            showAlert("User credentials or password doesn't match.")
+            showAlert("user_not_match".localized)
         }
     }
     

@@ -21,7 +21,7 @@ final class AuthenticationViewModel {
             completion(true, nil) // Success
         } catch {
             print("Failed to register user: \(error.localizedDescription)")
-            completion(false, "Failed to register user: \(error.localizedDescription)")
+            completion(false, "register_failed".localized +  "\(error.localizedDescription)")
             }
         }
         

@@ -10,23 +10,32 @@
 ///ERROR HANDLING
 "ok_button" = "OK";
 "error_text" = "Error";
-
+"user_unknown" = "Unknown User";
+"rating" = "Rating";
+"unknown_title" = "Unknown Title";
+"app_name" = "LearnConnect";
 
 /// LOGIN PAGE
-
-
+"register_failed" = "Failed to register user";
+"user_not_match" = "User credentials or password doesn't match.";
+"login" = "Login";
+"register" = "Register";
+"welcome" = "Welcome to LearnConnect";
+"enter_email" = "Enter E-Mail";
+"enter_password" = "Enter Password";
 /// REGISTER
-
-
+"register_fail" = "Registration failed";
 /// COURSE DETAIL
-
-
+"user_enroll" = "Enroll in this course";
+"rate_course" = "Rate this course";
+"make_comment" = "Enter your comment";
+"submit" = "Submit";
 /// COURSE LIST
-
-
+"all_courses" = "All Courses";
+"my_courses" = "My Courses";
+"search" = "Search Courses";
 /// PROFILE
-
-
-/// TABBAR
+"profile" = "My Profile";
+"fav_courses" = "Favorite Courses";
 
 

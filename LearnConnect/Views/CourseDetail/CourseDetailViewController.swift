@@ -40,7 +40,7 @@ final class CourseDetailViewController: UIViewController {
 
         enrollView.translatesAutoresizingMaskIntoConstraints = false
         
-        rateButton.setTitle("Rate this Course", for: .normal)
+        rateButton.setTitle("rate_course".localized, for: .normal)
         rateButton.tintColor = .systemOrange
         rateButton.addTarget(self, action: #selector(rateCourse), for: .touchUpInside)
 
@@ -67,13 +67,13 @@ final class CourseDetailViewController: UIViewController {
     
     private func loadCourseDetails() {
         guard let course = course else { return }
-        titleView.configure(title: course.title ?? "Unknown Title", isFavorite: viewModel.isFavorite(course: course))
+        titleView.configure(title: course.title ?? "unknown_title".localized, isFavorite: viewModel.isFavorite(course: course))
         descriptionLabel.text = course.desc
     }
     
     private func updateFavoriteButtonState() {
         guard let course = course else { return }
-        titleView.configure(title: course.title ?? "Unknown Title", isFavorite: viewModel.isFavorite(course: course))
+        titleView.configure(title: course.title ?? "unknown_title".localized, isFavorite: viewModel.isFavorite(course: course))
     }
     
     @objc private func rateCourse() {

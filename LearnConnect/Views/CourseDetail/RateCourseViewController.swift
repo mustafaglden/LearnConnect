@@ -34,12 +34,12 @@ final class RateCourseViewController: UIViewController {
         pickerView.dataSource = self
         
         // Comment TextField setup
-        commentTextField.placeholder = "Enter your comment"
+        commentTextField.placeholder = "make_comment".localized
         commentTextField.borderStyle = .roundedRect
         commentTextField.translatesAutoresizingMaskIntoConstraints = false
         
         // Submit Button setup
-        submitButton.setTitle("Submit", for: .normal)
+        submitButton.setTitle("submit".localized, for: .normal)
         submitButton.setTitleColor(.white, for: .normal)
         submitButton.backgroundColor = .systemBlue
         submitButton.layer.cornerRadius = 8
