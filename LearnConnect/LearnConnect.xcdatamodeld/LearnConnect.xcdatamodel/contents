@@ -8,6 +8,7 @@
         <relationship name="enrolledUsers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="enrolledCourses" inverseEntity="User"/>
         <relationship name="enrollments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Enrollment" inverseName="course" inverseEntity="Enrollment"/>
         <relationship name="feedbacks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Feedback" inverseName="course" inverseEntity="Feedback"/>
+        <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="User" inverseName="favoriteCourses" inverseEntity="User"/>
     </entity>
     <entity name="Enrollment" representedClassName="Enrollment" syncable="YES" codeGenerationType="class">
         <attribute name="videoProgress" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
@@ -26,6 +27,7 @@
         <attribute name="username" optional="YES" attributeType="String"/>
         <relationship name="enrolledCourses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Course" inverseName="enrolledUsers" inverseEntity="Course"/>
         <relationship name="enrollments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Enrollment" inverseName="user" inverseEntity="Enrollment"/>
+        <relationship name="favoriteCourses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Course" inverseName="users" inverseEntity="Course"/>
         <relationship name="feedbacks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Feedback" inverseName="user" inverseEntity="Feedback"/>
     </entity>
 </model>

@@ -64,10 +64,12 @@ final class RegisterViewController: UIViewController {
     
     @objc private func registerTapped() {
         guard let email = emailTextField.text, let password = passwordTextField.text else { return }
-        if viewModel.registerUser(email: email, password: password) {
-            navigationController?.popViewController(animated: true)
-        } else {
-            showAlert("Registration failed.")
+        viewModel.registerUser(email: email, password: password) { success, message in
+            if success {
+                self.navigationController?.popViewController(animated: true)
+            } else {
+                self.showAlert("Registration failed.")
+            }
         }
     }
 }

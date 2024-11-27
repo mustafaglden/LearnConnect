@@ -12,10 +12,9 @@ import UIKit
 final class CourseDetailViewController: UIViewController {
     
     var course: Course?
-    private let titleLabel = UILabel()
+    private let titleView = TitleView()
     private let descriptionLabel = UILabel()
-    private let enrollSwitch = UISwitch()
-    private let enrollLabel = UILabel()
+    private let enrollView = EnrollView()
     private let rateButton = UIButton(type: .system)
     private let feedbackTextView = UITextView()
     private let tableView = UITableView()
@@ -26,34 +25,31 @@ final class CourseDetailViewController: UIViewController {
         return ratingPickerSelectedIndex + 1
     }
     var ratingPickerSelectedIndex: Int = 0
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         loadCourseDetails()
+        notificationHandlers()
     }
     
     private func setupUI() {
         view.backgroundColor = .white
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 24)
         descriptionLabel.font = UIFont.systemFont(ofSize: 16)
         descriptionLabel.numberOfLines = 0
 
-        enrollLabel.text = "Enroll in this course"
-        enrollLabel.font = UIFont.systemFont(ofSize: 18)
-        enrollSwitch.addTarget(self, action: #selector(toggleEnrollment), for: .valueChanged)
+        enrollView.translatesAutoresizingMaskIntoConstraints = false
         
-        // Rating button setup
         rateButton.setTitle("Rate this Course", for: .normal)
+        rateButton.tintColor = .systemOrange
         rateButton.addTarget(self, action: #selector(rateCourse), for: .touchUpInside)
 
-        // TableView setup
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(RatingTableViewCell.self, forCellReuseIdentifier: "FeedbackCell")
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel, enrollLabel, enrollSwitch, rateButton, tableView])
+        let stackView = UIStackView(arrangedSubviews: [titleView, descriptionLabel, enrollView, rateButton, tableView])
         stackView.axis = .vertical
         stackView.spacing = 20
         stackView.alignment = .fill
@@ -71,21 +67,21 @@ final class CourseDetailViewController: UIViewController {
     
     private func loadCourseDetails() {
         guard let course = course else { return }
-        titleLabel.text = course.title
+        titleView.configure(title: course.title ?? "Unknown Title", isFavorite: viewModel.isFavorite(course: course))
         descriptionLabel.text = course.desc
     }
     
-    @objc private func toggleEnrollment() {
+    private func updateFavoriteButtonState() {
         guard let course = course else { return }
-        viewModel.manageEnrollment(course: course, isEnrolled: enrollSwitch.isOn)
+        titleView.configure(title: course.title ?? "Unknown Title", isFavorite: viewModel.isFavorite(course: course))
     }
     
     @objc private func rateCourse() {
         let rateVC = RateCourseViewController()
-        rateVC.modalPresentationStyle = .pageSheet // Set modal presentation to pageSheet
+        rateVC.modalPresentationStyle = .pageSheet
         if let sheet = rateVC.sheetPresentationController {
-            sheet.detents = [.medium(), .large()] // Set the bottom sheet sizes
-            sheet.prefersGrabberVisible = true // Show a grabber for user convenience
+            sheet.detents = [.medium(), .large()]
+            sheet.prefersGrabberVisible = true
         }
         
         rateVC.onSubmit = { [weak self] rating, comment in
@@ -101,9 +97,27 @@ final class CourseDetailViewController: UIViewController {
         guard let course = course else { return }
         viewModel.onFeedbackSaved = { [weak self] in
             guard let self = self else { return }
-            self.tableView.reloadData() // Reload table view when feedback is saved
+            self.tableView.reloadData()
         }
         viewModel.submitFeedback(for: course, rating: rating, feedback: comment)
+    }
+    
+    private func notificationHandlers() {
+        titleView.onFavoriteToggle = { [weak self] in
+                    guard let self = self, let course = self.course else { return }
+                    self.viewModel.toggleFavorite(course: course) { success in
+                        if success {
+                            self.updateFavoriteButtonState()
+                        }
+                    }
+                }
+        
+        enrollView.onToggleEnrollment = { [weak self] isEnrolled in
+            guard let self = self else { return }
+                if let course = self.course {
+                self.viewModel.manageEnrollment(course: course, isEnrolled: isEnrolled)
+            }
+        }
     }
 }
 

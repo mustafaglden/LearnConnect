@@ -57,10 +57,35 @@ final class CourseListViewModel {
                     course.enrolledUsers = enrolledUsers as NSSet
                 }
             }
-            saveContext()
+            CoreDataStack.shared.saveContext()
         } catch {
             print("Failed to manage enrollment: \(error.localizedDescription)")
         }
+    }
+    
+    func toggleFavorite(course: Course, completion: @escaping (Bool) -> Void) {
+        guard let user = Session.user else {
+            completion(false)
+            return
+        }
+        if user.favoriteCourses?.contains(course) == true {
+            user.removeFromFavoriteCourses(course)
+        } else {
+            user.addToFavoriteCourses(course)
+        }
+        
+        do {
+            try CoreDataStack.shared.context.save()
+            completion(true)
+        } catch {
+            print("Failed to toggle favorite: \(error.localizedDescription)")
+            completion(false)
+        }
+    }
+
+    func isFavorite(course: Course) -> Bool {
+        guard let user = Session.user else { return false }
+        return user.favoriteCourses?.contains(course) ?? false
     }
     
     func submitFeedback(for course: Course, rating: Int, feedback: String) {
@@ -78,15 +103,7 @@ final class CourseListViewModel {
         course.addToFeedbacks(feedbackEntity)
         
         
-        saveContext()
+        CoreDataStack.shared.saveContext()
         onFeedbackSaved?()
-    }
-    
-    private func saveContext() {
-        do {
-            try context.save()
-        } catch {
-            print("Failed to save context \(error.localizedDescription)")
-        }
     }
 }

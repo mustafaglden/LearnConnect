@@ -10,7 +10,7 @@ import CoreData
 final class AuthenticationViewModel {
     private let context = CoreDataStack.shared.context
     
-    func registerUser(email: String, password: String) -> Bool {
+    func registerUser(email: String, password: String, completion: @escaping (Bool, String?) -> Void) {
         let user = User(context: context)
         user.email = email
         user.username = email
@@ -18,12 +18,12 @@ final class AuthenticationViewModel {
         
         do {
             try context.save()
-            return true
+            completion(true, nil) // Success
         } catch {
             print("Failed to register user: \(error.localizedDescription)")
-            return false
+            completion(false, "Failed to register user: \(error.localizedDescription)")
+            }
         }
-    }
         
     func loginUser(email: String, password: String) -> Bool {
         let fetchRequest: NSFetchRequest<User> = User.fetchRequest()

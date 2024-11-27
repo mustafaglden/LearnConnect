@@ -16,7 +16,7 @@ final class VideoPlayerViewModel {
         
         do {
             if let enrollment = try CoreDataStack.shared.context.fetch(fetchRequest).first {
-                enrollment.videoProgress = progress // Update progress
+                enrollment.videoProgress = progress
                 CoreDataStack.shared.saveContext()
                 print("Progress saved to Core Data: \(progress * 100)%")
             } else {
@@ -41,14 +41,6 @@ final class VideoPlayerViewModel {
         } catch {
             print("Failed to fetch video progress: \(error.localizedDescription)")
             return 0.0
-        }
-    }
-    
-    private func saveContext() {
-        do {
-            try context.save()
-        } catch {
-            print("Failed to save context \(error.localizedDescription)")
         }
     }
 }
