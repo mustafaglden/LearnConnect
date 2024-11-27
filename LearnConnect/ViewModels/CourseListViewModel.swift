@@ -43,18 +43,10 @@ final class CourseListViewModel {
                 } else {
                     print("\(user.email) is already enrolled in \(course.title).")
                 }
-                if var enrolledUsers = course.enrolledUsers as? Set<User> {
-                    enrolledUsers.insert(user)
-                    course.enrolledUsers = enrolledUsers as NSSet
-                }
             } else {
                 if let enrollment = results.first {
                     context.delete(enrollment)
                     print("\(user.email) unenrolled from \(course.title).")
-                }
-                if var enrolledUsers = course.enrolledUsers as? Set<User> {
-                    enrolledUsers.remove(user)
-                    course.enrolledUsers = enrolledUsers as NSSet
                 }
             }
             CoreDataStack.shared.saveContext()

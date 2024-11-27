@@ -16,6 +16,10 @@ final class MyCoursesViewController: UIViewController{
         super.viewDidLoad()
         title = "my_courses".localized
         setupUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         fetchEnrolledCourses()
     }
     
@@ -28,10 +32,12 @@ final class MyCoursesViewController: UIViewController{
     }
     
     private func fetchEnrolledCourses() {
-        guard let courseSet = Session.user?.enrolledCourses else {
+        guard let enrollments = Session.user?.enrollments as? Set<Enrollment> else {
+            courses = []
+            tableView.reloadData()
             return
         }
-        courses = (courseSet.allObjects as? [Course]) ?? []
+        courses = enrollments.compactMap { $0.course }
         tableView.reloadData()
     }
 }
