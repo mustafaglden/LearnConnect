@@ -23,7 +23,21 @@ final class CourseListViewModel {
             return []
         }
     }
-    func manageEnrollment(course: Course, isEnrolled: Bool) {
+    
+    func isUserEnrolled(in course: Course) -> Bool {
+        guard let user = Session.user else { return false }
+        let fetchRequest: NSFetchRequest<Enrollment> = Enrollment.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "user == %@ AND course == %@", user, course)
+        do {
+            let results = try context.fetch(fetchRequest)
+            return !results.isEmpty
+        } catch {
+            print("Failed to check enrollment status: \(error.localizedDescription)")
+            return false
+        }
+    }
+    
+    func manageEnrollment(course: Course, isEnrolled: Bool, completion: @escaping () -> Void) {
         guard let user = Session.user else {
             return
         }
@@ -50,6 +64,7 @@ final class CourseListViewModel {
                 }
             }
             CoreDataStack.shared.saveContext()
+            completion()
         } catch {
             print("Failed to manage enrollment: \(error.localizedDescription)")
         }

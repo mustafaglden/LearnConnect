@@ -31,10 +31,16 @@ final class CourseDetailViewController: UIViewController {
         setupUI()
         loadCourseDetails()
         notificationHandlers()
+        updateEnrollButtonState()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateEnrollButtonState()
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = Constants.customBackgroundColor
         descriptionLabel.font = UIFont.systemFont(ofSize: 16)
         descriptionLabel.numberOfLines = 0
 
@@ -114,10 +120,18 @@ final class CourseDetailViewController: UIViewController {
         
         enrollView.onToggleEnrollment = { [weak self] isEnrolled in
             guard let self = self else { return }
-                if let course = self.course {
-                self.viewModel.manageEnrollment(course: course, isEnrolled: isEnrolled)
+            if let course = self.course {
+                self.viewModel.manageEnrollment(course: course, isEnrolled: isEnrolled) {
+                    self.updateEnrollButtonState()
+                }
             }
         }
+    }
+    
+    private func updateEnrollButtonState() {
+        guard let course = course else { return }
+        let isEnrolled = viewModel.isUserEnrolled(in: course)
+        enrollView.configure(isEnrolled: isEnrolled)
     }
 }
 

@@ -24,7 +24,7 @@ final class RatingTableViewCell: UITableViewCell {
     
     private func setupUI() {
         nameLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        nameLabel.textColor = .black
+        nameLabel.textColor = Constants.customTintColor
                 
         commentLabel.font = UIFont.systemFont(ofSize: 14)
         commentLabel.textColor = .darkGray

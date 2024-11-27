@@ -25,7 +25,7 @@ final class RateCourseViewController: UIViewController {
     
     // MARK: - Setup UI
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = Constants.customBackgroundColor
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         

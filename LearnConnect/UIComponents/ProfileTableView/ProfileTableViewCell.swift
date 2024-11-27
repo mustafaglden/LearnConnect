@@ -23,7 +23,7 @@ final class ProfileTableViewCell: UITableViewCell {
     private func setupUI() {
         backgroundColor = .orange
         titleLabel.font = UIFont.systemFont(ofSize: 16)
-        titleLabel.textColor = .white
+        titleLabel.textColor = Constants.customTintColor
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         

@@ -27,7 +27,7 @@ final class ProfileViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = Session.user?.username
         label.font = UIFont.boldSystemFont(ofSize: 18)
-        label.textColor = .black
+        label.textColor = Constants.customTintColor
         return label
     }()
     
@@ -35,7 +35,7 @@ final class ProfileViewController: UIViewController {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.font = UIFont.boldSystemFont(ofSize: 18)
-        textField.textColor = .black
+        textField.textColor = Constants.customTintColor
         textField.borderStyle = .roundedRect
         textField.isHidden = true
         return textField
@@ -86,7 +86,7 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         
         title = "profile".localized
-        view.backgroundColor = .white
+        view.backgroundColor = Constants.customBackgroundColor
         tableView.delegate = self
         tableView.dataSource = self
         

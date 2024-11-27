@@ -62,7 +62,7 @@ final class LoginViewController: UIViewController {
     func setupTitle() {
         view.addSubview(titleLabel)
         
-        titleLabel.textColor = .white
+        titleLabel.textColor = Constants.customTintColor
         titleLabel.text = "welcome".localized
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.boldSystemFont(ofSize: 28)
