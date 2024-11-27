@@ -36,6 +36,6 @@ To run this project locally, follow these steps:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/LearnConnect.git
+   git clone https://github.com/mustafaglden/LearnConnect.git
 2. **Open the project on xcode**
 3. **Build and run the project**
